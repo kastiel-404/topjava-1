@@ -1,8 +1,10 @@
 .idea
+.idea_modules
+idea.bat
 out
 target
 *.iml
-log
+atlassian-ide-plugin.xml
 
 
 
