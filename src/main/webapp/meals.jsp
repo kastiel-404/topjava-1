@@ -6,7 +6,7 @@
     <title>Users</title>
     <style>
         .bgRed{
-           background-color: red;
+           color: red;
         }
     </style>
 </head>
@@ -25,9 +25,12 @@
                 <td>${f:formatLocalDateTime(meal.dateTime)}</td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
+                <td><a href="meals?action=edit&mealId=${meal.id}">Edit</a></td>
+                <td><a href="meals?action=delete&mealId=${meal.id}">Delete</a></td>
             </tr>
         </c:forEach>
     </tbody>
 </table>
+<p><a href="meals?action=add">Add Meal</a></p>
 </body>
 </html>
