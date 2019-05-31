@@ -38,8 +38,12 @@ public class MealServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         String action = request.getParameter("action");
+        String authorizationId = request.getParameter("authorization");
 
-        if(action.equals("filter")){
+        if(!authorizationId.isEmpty()){
+            SecurityUtil.setUserId(Integer.parseInt(authorizationId));
+            response.sendRedirect("meals");
+        }else if(action.equals("filter")){
             LocalDate fromDate = DateTimeUtil.parseLocalDate(request.getParameter("fromDate"));
             LocalTime fromTime = DateTimeUtil.parseLocalTime(request.getParameter("fromTime"));
             LocalDate toDate = DateTimeUtil.parseLocalDate(request.getParameter("toDate"));
