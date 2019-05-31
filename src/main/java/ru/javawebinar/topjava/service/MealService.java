@@ -4,6 +4,8 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collection;
 
 public interface MealService {
@@ -17,4 +19,7 @@ public interface MealService {
     void update(Meal meal, int userId);
 
     Collection<MealTo> getAll(int userId, int caloriesPerDay);
+
+    Collection<MealTo> getAllFilteredByDateAndTime(LocalDate fromDate, LocalDate toDate,
+                                                   LocalTime fromTime, LocalTime toTime, int userId, int caloriesPerDay);
 }

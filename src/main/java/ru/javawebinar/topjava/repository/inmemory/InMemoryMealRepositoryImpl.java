@@ -2,9 +2,13 @@ package ru.javawebinar.topjava.repository.inmemory;
 
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.model.MealTo;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -44,6 +48,16 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
         return repository.getOrDefault(userId, new HashMap<>()).values()
                 .stream().sorted(Comparator.comparing(Meal::getDateTime).reversed())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<MealTo> getAllFilteredByDateAndTime(LocalDate fromDate, LocalDate toDate,
+                                                          LocalTime fromTime, LocalTime toTime, int userId, int caloriesPerDay) {
+        fromDate = Optional.ofNullable(fromDate).orElse(LocalDate.MIN);
+        toDate = Optional.ofNullable(toDate).orElse(LocalDate.MAX);
+        fromTime = Optional.ofNullable(fromTime).orElse(LocalTime.MIN);
+        toTime = Optional.ofNullable(toTime).orElse(LocalTime.MAX);
+        return MealsUtil.getFilteredWithExcess(getAll(userId), caloriesPerDay, fromDate, toDate, fromTime, toTime);
     }
 }
 

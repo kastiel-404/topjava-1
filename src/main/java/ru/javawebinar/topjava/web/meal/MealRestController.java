@@ -8,6 +8,8 @@ import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.util.ValidationUtil;
 import ru.javawebinar.topjava.web.SecurityUtil;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collection;
 
 @Controller
@@ -40,5 +42,11 @@ public class MealRestController {
 
     public Collection<MealTo> getAll(){
         return service.getAll(SecurityUtil.authUserId(), SecurityUtil.authUserCaloriesPerDay());
+    }
+
+    public Collection<MealTo> getAllFilteredByDateAndTime(LocalDate fromDate, LocalDate toDate,
+                                                          LocalTime fromTime, LocalTime toTime){
+        return service.getAllFilteredByDateAndTime(fromDate, toDate, fromTime, toTime,
+                SecurityUtil.authUserId(), SecurityUtil.authUserCaloriesPerDay());
     }
 }

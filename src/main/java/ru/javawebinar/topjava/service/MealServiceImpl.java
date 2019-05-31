@@ -9,6 +9,8 @@ import ru.javawebinar.topjava.util.MealsUtil;
 import static ru.javawebinar.topjava.util.ValidationUtil.*;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collection;
 
 @Service
@@ -39,6 +41,11 @@ public class MealServiceImpl implements MealService {
     @Override
     public void update(Meal meal, int userId) {
         assureIdConsistent(repository.save(meal, userId), meal.getId());
+    }
+
+    @Override
+    public Collection<MealTo> getAllFilteredByDateAndTime(LocalDate fromDate, LocalDate toDate, LocalTime fromTime, LocalTime toTime, int userId, int caloriesPerDay) {
+        return repository.getAllFilteredByDateAndTime(fromDate, toDate, fromTime, toTime, userId, caloriesPerDay);
     }
 
     @Override

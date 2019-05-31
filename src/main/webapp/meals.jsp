@@ -20,6 +20,14 @@
 <section>
     <h3><a href="index.html">Home</a></h3>
     <h2>Meals</h2>
+    <form class="filter-container" method="post" action="meals">
+        <input type="hidden" name="action" value="filter">
+        <input type="date" name="fromDate">
+        <input type="time" name="fromTime">
+        <input type="date" name="toDate">
+        <input type="time" name="toTime">
+        <button type="submit">Filter</button>
+    </form>
     <a href="meals?action=create">Add Meal</a>
     <hr/>
     <table border="1" cellpadding="8" cellspacing="0">
