@@ -1,12 +1,15 @@
 DROP TABLE IF EXISTS user_roles;
+DROP TABLE IF EXISTS meals;
 DROP TABLE IF EXISTS users;
-DROP SEQUENCE IF EXISTS global_seq;
+DROP SEQUENCE IF EXISTS seq_users;
+DROP SEQUENCE IF EXISTS seq_meals;
 
-CREATE SEQUENCE global_seq START WITH 100000;
+CREATE SEQUENCE seq_users START WITH 100000;
+CREATE SEQUENCE seq_meals START WITH 100000;
 
 CREATE TABLE users
 (
-  id               INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+  id               INTEGER PRIMARY KEY DEFAULT nextval('seq_users'),
   name             VARCHAR                 NOT NULL,
   email            VARCHAR                 NOT NULL,
   password         VARCHAR                 NOT NULL,
@@ -14,7 +17,22 @@ CREATE TABLE users
   enabled          BOOL DEFAULT TRUE       NOT NULL,
   calories_per_day INTEGER DEFAULT 2000    NOT NULL
 );
+
 CREATE UNIQUE INDEX users_unique_email_idx ON users (email);
+
+CREATE TABLE meals
+(
+  id          INTEGER PRIMARY KEY DEFAULT nextval('seq_meals'),
+  date_time        TIMESTAMP               NOT NULL,
+  description      VARCHAR                 NOT NULL,
+  calories         INTEGER                 NOT NULL,
+  user_id          INTEGER                 NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users (id)   ON DELETE CASCADE
+);
+
+CREATE UNIQUE INDEX meals_unique_user_datetime_idx
+ON meals (user_id, date_time);
+
 
 CREATE TABLE user_roles
 (
