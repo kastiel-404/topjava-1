@@ -32,6 +32,7 @@ public class InMemoryAdminRestControllerTest {
     @Before
     public void setUp() throws Exception {
         // re-initialize
+
         InMemoryUserRepositoryImpl repository = appCtx.getBean(InMemoryUserRepositoryImpl.class);
         repository.init();
     }
