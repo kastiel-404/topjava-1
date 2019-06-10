@@ -10,8 +10,9 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
-import static ru.javawebinar.topjava.UserTestData.ADMIN;
+import static ru.javawebinar.topjava.UserTestData.*;
 
 public class InMemoryAdminRestControllerTest {
     private static ConfigurableApplicationContext appCtx;
@@ -39,14 +40,46 @@ public class InMemoryAdminRestControllerTest {
 
     @Test
     public void delete() throws Exception {
-        controller.delete(UserTestData.USER_ID);
+        controller.delete(USER_ID);
         Collection<User> users = controller.getAll();
-        Assert.assertEquals(users.size(), 1);
-        Assert.assertEquals(users.iterator().next(), ADMIN);
+        assertMatch(users.size(), 1);
+        assertMatch(users, ADMIN);
     }
 
     @Test(expected = NotFoundException.class)
     public void deleteNotFound() throws Exception {
         controller.delete(10);
+    }
+
+    @Test
+    public void get() throws Exception {
+        User user = controller.get(USER_ID);
+        assertMatch(user, USER);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void getNotFound() throws Exception {
+        controller.get(1);
+    }
+
+    @Test
+    public void getByEmail() throws Exception {
+        User user = controller.getByMail("user@yandex.ru");
+        assertMatch(user, USER);
+    }
+
+    @Test
+    public void update() throws Exception {
+        User updated = new User(USER);
+        updated.setName("UpdatedName");
+        updated.setCaloriesPerDay(330);
+        controller.update(updated, USER_ID);
+        assertMatch(controller.get(USER_ID), updated);
+    }
+
+    @Test
+    public void getAll() throws Exception {
+        List<User> all = controller.getAll();
+        assertMatch(all, ADMIN, USER);
     }
 }

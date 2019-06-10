@@ -26,13 +26,6 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     // Map  userId -> (mealId-> meal)
     private Map<Integer, InMemoryBaseRepositoryImpl<Meal>> usersMealsMap = new ConcurrentHashMap<>();
 
-    {
-        MealsUtil.MEALS.forEach(meal -> save(meal, USER_ID));
-
-        save(new Meal(LocalDateTime.of(2015, Month.JUNE, 1, 14, 0), "Админ ланч", 510), ADMIN_ID);
-        save(new Meal(LocalDateTime.of(2015, Month.JUNE, 1, 21, 0), "Админ ужин", 1500), ADMIN_ID);
-    }
-
 
     @Override
     public Meal save(Meal meal, int userId) {
@@ -69,5 +62,13 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
                         .filter(filter)
                         .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                         .collect(Collectors.toList());
+    }
+
+    public void init() {
+        usersMealsMap.clear();
+        InMemoryBaseRepositoryImpl.setCounter(99999);
+        save(new Meal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Breakfast", 500), USER_ID);
+        save(new Meal(LocalDateTime.of(2015, Month.MAY, 31, 14, 0), "Lunch", 1000), USER_ID);
+        save(new Meal(LocalDateTime.of(2015, Month.JUNE, 1, 14, 0), "Admin Supper", 510), ADMIN_ID);
     }
 }

@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Repository
 public class InMemoryBaseRepositoryImpl<T extends AbstractBaseEntity> {
 
-    private static AtomicInteger counter = new AtomicInteger(0);
+    private static AtomicInteger counter = new AtomicInteger(99999);
 
     Map<Integer, T> entryMap = new ConcurrentHashMap<>();
 
@@ -34,5 +34,9 @@ public class InMemoryBaseRepositoryImpl<T extends AbstractBaseEntity> {
 
     Collection<T> getCollection() {
         return entryMap.values();
+    }
+
+    public static void setCounter(int entryCounter){
+        InMemoryBaseRepositoryImpl.counter.set(entryCounter);
     }
 }

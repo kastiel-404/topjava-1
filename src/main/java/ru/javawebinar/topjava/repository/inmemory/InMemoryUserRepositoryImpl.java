@@ -20,6 +20,7 @@ public class InMemoryUserRepositoryImpl extends InMemoryBaseRepositoryImpl<User>
 
     public void init() {
         entryMap.clear();
+        setCounter(100001);
         entryMap.put(USER_ID, USER);
         entryMap.put(ADMIN_ID, ADMIN);
     }
