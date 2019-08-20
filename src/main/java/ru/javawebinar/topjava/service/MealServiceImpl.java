@@ -15,44 +15,49 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 @Service
 public class MealServiceImpl implements MealService {
 
-    private final MealRepository repository;
+    private final MealRepository mealRepository;
 
     @Autowired
-    public MealServiceImpl(MealRepository repository) {
-        this.repository = repository;
+    public MealServiceImpl(MealRepository mealRepository) {
+        this.mealRepository = mealRepository;
     }
 
     @Override
     public Meal get(int id, int userId) {
-        return checkNotFoundWithId(repository.get(id, userId), id);
+        return checkNotFoundWithId(mealRepository.get(id, userId), id);
     }
 
     @Override
     public void delete(int id, int userId) {
-        checkNotFoundWithId(repository.delete(id, userId), id);
+        checkNotFoundWithId(mealRepository.delete(id, userId), id);
     }
 
     @Override
     public List<Meal> getBetweenDateTimes(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
         Assert.notNull(startDateTime, "startDateTime must not be null");
         Assert.notNull(endDateTime, "endDateTime  must not be null");
-        return repository.getBetween(startDateTime, endDateTime, userId);
+        return mealRepository.getBetween(startDateTime, endDateTime, userId);
     }
 
     @Override
     public List<Meal> getAll(int userId) {
-        return repository.getAll(userId);
+        return mealRepository.getAll(userId);
     }
 
     @Override
     public void update(Meal meal, int userId) {
         Assert.notNull(meal, "meal must not be null");
-        checkNotFoundWithId(repository.save(meal, userId), meal.getId());
+        checkNotFoundWithId(mealRepository.save(meal, userId), meal.getId());
     }
 
     @Override
     public Meal create(Meal meal, int userId) {
         Assert.notNull(meal, "meal must not be null");
-        return repository.save(meal, userId);
+        return mealRepository.save(meal, userId);
+    }
+
+    @Override
+    public Meal getWithUser(int id, int userId) {
+        return checkNotFoundWithId(mealRepository.getWithUser(id, userId), id);
     }
 }
