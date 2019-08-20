@@ -15,7 +15,6 @@ public class TimingRules {
 
     private static StringBuilder results = new StringBuilder();
 
-
     // http://stackoverflow.com/questions/14892125/what-is-the-best-practice-to-determine-the-execution-time-of-the-bussiness-relev
 
     public static final Stopwatch STOPWATCH = new Stopwatch() {
