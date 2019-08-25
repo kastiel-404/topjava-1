@@ -14,7 +14,7 @@ import static ru.javawebinar.topjava.MealTestData.MEAL2;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
-public class AbstractMealServiceTest extends AbstractServiceTest{
+public abstract class AbstractMealServiceTest extends AbstractServiceTest{
 
     @Autowired
     protected MealService service;
@@ -25,9 +25,9 @@ public class AbstractMealServiceTest extends AbstractServiceTest{
         assertMatch(service.getAll(USER_ID), MEAL6, MEAL5, MEAL4, MEAL3, MEAL2);
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void deleteNotFound() throws Exception {
-        thrown.expect(NotFoundException.class);
+        //thrown.expect(NotFoundException.class);
         service.delete(MEAL1_ID, 1);
     }
 
@@ -46,9 +46,9 @@ public class AbstractMealServiceTest extends AbstractServiceTest{
         assertMatch(actual, ADMIN_MEAL1);
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void getNotFound() throws Exception {
-        thrown.expect(NotFoundException.class);
+        //thrown.expect(NotFoundException.class);
         service.get(MEAL1_ID, ADMIN_ID);
     }
 
@@ -59,10 +59,10 @@ public class AbstractMealServiceTest extends AbstractServiceTest{
         assertMatch(service.get(MEAL1_ID, USER_ID), updated);
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void updateNotFound() throws Exception {
-        thrown.expect(NotFoundException.class);
-        thrown.expectMessage("Not found entity with id=" + MEAL1_ID);
+        /*thrown.expect(NotFoundException.class);
+        thrown.expectMessage("Not found entity with id=" + MEAL1_ID);*/
         service.update(MEAL1, ADMIN_ID);
     }
 
