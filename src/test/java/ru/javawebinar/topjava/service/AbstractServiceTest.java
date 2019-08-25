@@ -1,8 +1,10 @@
 package ru.javawebinar.topjava.service;
 
 import org.junit.AfterClass;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
+import org.junit.rules.ExternalResource;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
@@ -15,6 +17,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.javawebinar.topjava.ActiveDbProfileResolver;
+import ru.javawebinar.topjava.TimingRules;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,35 +30,15 @@ import java.util.concurrent.TimeUnit;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class AbstractServiceTest {
 
-    private static final Logger log = LoggerFactory.getLogger("result");
-
-    private static StringBuilder results = new StringBuilder();
+    @ClassRule
+    public static ExternalResource summary = TimingRules.SUMMARY;
 
     @Rule
+    public Stopwatch stopwatch = TimingRules.STOPWATCH;
+
     public ExpectedException thrown = ExpectedException.none();
 
-    @Rule
-    public Stopwatch stopwatch = new Stopwatch() {
-        @Override
-        protected void finished(long nanos, Description description) {
-            String result = String.format("%-95s %7d", description.getDisplayName(), TimeUnit.NANOSECONDS.toMillis(nanos));
-            results.append(result).append('\n');
-            log.info(result + " ms\n");
-        }
-    };
-
     static {
-        // needed only for java.util.logging (postgres driver)
          SLF4JBridgeHandler.install();
-    }
-
-    @AfterClass
-    public static void printResult() {
-        log.info("\n-------------------------------------------------------------------------------------------------------" +
-                        "\nTest                                                                                       Duration, ms" +
-                        "\n-------------------------------------------------------------------------------------------------------\n" +
-                        results +
-                        "-------------------------------------------------------------------------------------------------------\n");
-        results.setLength(0);
     }
 }
