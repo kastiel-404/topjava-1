@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.service;
 
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
@@ -21,6 +22,9 @@ import ru.javawebinar.topjava.TimingRules;
 
 import java.util.concurrent.TimeUnit;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static ru.javawebinar.topjava.util.ValidationUtil.getRootCause;
+
 @ContextConfiguration({
                 "classpath:spring/spring-app.xml",
                 "classpath:spring/spring-db.xml"
@@ -40,5 +44,14 @@ public class AbstractServiceTest {
 
     static {
          SLF4JBridgeHandler.install();
+    }
+
+    public <T extends Throwable> void validateRootCause(Runnable runnable, Class<T> exceptionClass) {
+        try {
+            runnable.run();
+            Assert.fail("Expected " + exceptionClass.getName());
+        } catch (Exception e) {
+            Assert.assertThat(getRootCause(e), instanceOf(exceptionClass));
+        }
     }
 }
