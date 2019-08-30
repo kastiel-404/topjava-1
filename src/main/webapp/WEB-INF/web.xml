@@ -6,6 +6,19 @@
 
     <display-name>Topjava</display-name>
 
+    <filter>
+        <filter-name>CharacterSetFilter</filter-name>
+        <filter-class>ru.javawebinar.topjava.filter.CharacterSetFilter</filter-class>
+        <init-param>
+            <param-name>requestEncoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharacterSetFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <context-param>
         <param-name>spring.profiles.default</param-name>
         <param-value>postgres,datajpa</param-value>
