@@ -12,12 +12,15 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.javawebinar.topjava.ActiveDbProfileResolver;
+import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.TimingRules;
 
 import java.util.concurrent.TimeUnit;
@@ -40,10 +43,18 @@ public class AbstractServiceTest {
     @Rule
     public Stopwatch stopwatch = TimingRules.STOPWATCH;
 
+    @Autowired
+    public Environment env;
+
     public ExpectedException thrown = ExpectedException.none();
 
     static {
          SLF4JBridgeHandler.install();
+    }
+
+    public boolean isJpaBased() {
+    //  return Arrays.stream(env.getActiveProfiles()).noneMatch(Profiles.JDBC::equals);
+        return env.acceptsProfiles(org.springframework.core.env.Profiles.of(Profiles.JPA, Profiles.DATAJPA));
     }
 
     public <T extends Throwable> void validateRootCause(Runnable runnable, Class<T> exceptionClass) {
